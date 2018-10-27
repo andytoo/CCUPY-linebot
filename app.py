@@ -1,6 +1,7 @@
 ################## 初始化 Line Bot API ##################
 import os
 import dotenv
+import random
 dotenv.load_dotenv()
 
 from linebot import LineBotApi, WebhookHandler
@@ -35,14 +36,26 @@ def callback():
 ################### 接收並處理文字訊息 ##################
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 
+food = [
+'salad',
+'sandwich',
+'bread',
+'steak',
+'tuna steak',
+'fish',
+'rice',
+'spaghetti',
+]
+
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text=event.message.text))
+    if '午餐吃什麼' in event.message.text:
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=random.choice(food)))
 #########################################################
 
 
 ####################### 執行 Flask ######################
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
